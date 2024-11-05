@@ -1,24 +1,39 @@
 // AuthContext.js
-import React, { createContext, useContext, useState, useEffect } from "react";
-import { onAuthStateChanged, getAuth } from "firebase/auth";
+"use client";
+import React, { createContext, useContext, useEffect, useState } from "react";
+import { auth } from "./firebase"; // Import the already initialized auth instance
+import { onAuthStateChanged } from "firebase/auth";
 
-const AuthContext = createContext();
+const AuthContext = createContext({
+    currentUser: null, 
+});
 
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
+  const [currentUser, setCurrentUser] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const auth = getAuth();
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      setUser(currentUser); // Sets the user on login or null on logout
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+/*       setUser(user);
+      setLoading(false); */
+      if (user) {
+        setCurrentUser({
+          email: user.email,
+          username: user.displayName,
+        });
+      } else {
+        setCurrentUser(null);
+      }
     });
 
-    // Cleanup subscription on unmount
-    return () => unsubscribe();
+    return unsubscribe;
   }, []);
 
-  return <AuthContext.Provider value={user}>{children}</AuthContext.Provider>;
+  return (
+    <AuthContext.Provider value={{ currentUser, loading }}>
+      {children}
+    </AuthContext.Provider>
+  );
 };
 
-// Hook to use the auth context
 export const useAuth = () => useContext(AuthContext);
