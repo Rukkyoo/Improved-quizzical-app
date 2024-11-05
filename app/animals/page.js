@@ -62,13 +62,13 @@ const Animals = () => {
 
         return (
           <div
-            className="bg-white p-5 text-slate-950 border border-gray-300 rounded-lg mb-5 shadow"
+            className="bg-white p-2 overflow-scroll text-slate-950 border border-gray-300 rounded-lg mb-5 shadow"
             key={index}
           >
             <h3 className="text-lg font-semibold mb-4">
               {he.decode(question.question)}
             </h3>
-            <div className="flex gap-3 h-22 text-center">
+            <div className="flex gap-3 text-sm h-22 text-center">
               {answers.map((answer, i) => {
                 const decodedAnswer = he.decode(answer);
                 const isSelected = selectedAnswers[index] === decodedAnswer;
