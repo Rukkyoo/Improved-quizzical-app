@@ -62,7 +62,7 @@ const Generalknowledge = () => {
 
         return (
           <div
-            className="bg-white p-2 overflow-scroll text-slate-950 border border-gray-300 rounded-lg mb-5 shadow"
+            className="bg-white p-2 overflow-hidden text-slate-950 border border-gray-300 rounded-lg mb-5 shadow"
             key={index}
           >
             <h3 className="text-lg font-semibold mb-4">

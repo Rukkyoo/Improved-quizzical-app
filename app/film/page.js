@@ -62,7 +62,7 @@ const Film = () => {
 
         return (
           <div
-            className="bg-white p-2 overflow-scroll text-slate-950 border border-gray-300 rounded-lg mb-5 shadow"
+            className="bg-white p-2 text-slate-950 border border-gray-300 rounded-lg mb-5 shadow"
             key={index}
           >
             <h3 className="text-lg font-semibold mb-4">
@@ -76,7 +76,7 @@ const Film = () => {
                   decodedAnswer === he.decode(question.correct_answer);
 
                 let answerClass =
-                  "p-3 border rounded-lg cursor-pointer w-full sm:w-48 text-center";
+                  "px-3 py-1 border rounded-lg cursor-pointer w-full sm:w-48 text-center";
                 if (checkCorrectAnswer) {
                   if (isCorrect) {
                     answerClass += " bg-green-100 border-green-500"; // Highlight correct answers in green
