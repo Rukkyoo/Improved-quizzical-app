@@ -15,22 +15,16 @@ const Maths = () => {
   }, []);
 
   const loadQuestions = () => {
-    setDisplayPage(false); // Hide button while loading new questions
-    fetch(
-      "https://opentdb.com/api.php?amount=5&category=19&difficulty=easy&type=multiple"
-    )
+    setDisplayPage(false);
+    fetch("https://opentdb.com/api.php?amount=5&category=19&difficulty=easy&type=multiple")
       .then((res) => res.json())
       .then((data) => {
-        if (data.results) {
-          setGetQuestions(data.results);
-        } else {
-          setGetQuestions([]); // Fallback if data.results is undefined
-        }
-        setDisplayPage(true); // Show button when questions are loaded
+        setGetQuestions(data.results || []);
+        setDisplayPage(true);
       })
       .catch((error) => {
         console.error("Error loading questions:", error);
-        setGetQuestions([]); // Set to empty array on fetch error
+        setGetQuestions([]);
       });
   };
 
@@ -57,7 +51,7 @@ const Maths = () => {
     setSelectedAnswers({});
     setCheckCorrectAnswer(false);
     setScore(0);
-    loadQuestions(); // Reload questions
+    loadQuestions();
   };
 
   return (
@@ -71,13 +65,13 @@ const Maths = () => {
 
           return (
             <div
-              className="bg-white p-2  pr-4 overflow-x-scroll text-slate-950 border border-gray-300 rounded-lg mb-5 shadow"
+              className="bg-white p-2 pr-4 text-slate-950 border border-gray-300 rounded-lg mb-5 shadow"
               key={index}
             >
               <h3 className="text-lg font-semibold mb-4">
                 {he.decode(question.question)}
               </h3>
-              <div className="flex gap-3 h-22 text-sm text-center">
+              <div className="flex gap-3 h-22 text-sm text-center overflow-x-scroll">
                 {answers.map((answer, i) => {
                   const decodedAnswer = he.decode(answer);
                   const isSelected = selectedAnswers[index] === decodedAnswer;
@@ -85,23 +79,21 @@ const Maths = () => {
                     decodedAnswer === he.decode(question.correct_answer);
 
                   let answerClass =
-                    "px-3 py-1 border  rounded-lg cursor-pointer w-full sm:w-48 text-center";
+                    "px-3 py-1 border rounded-lg cursor-pointer w-full sm:w-48 text-center";
                   if (checkCorrectAnswer) {
                     if (isCorrect) {
-                      answerClass += " bg-green-100 border-green-500"; // Highlight correct answers in green
+                      answerClass += " bg-green-100 border-green-500";
                     } else if (isSelected && !isCorrect) {
-                      answerClass += " bg-red-100 border-red-500"; // Highlight incorrect selected answers in red
+                      answerClass += " bg-red-100 border-red-500";
                     }
                   } else {
-                    answerClass += " bg-blue-100 border-blue-300"; // Default style
+                    answerClass += " bg-blue-100 border-blue-300";
                   }
 
                   return (
                     <div
                       key={i}
-                      className={`${answerClass} ${
-                        isSelected ? "font-bold bg-purple-100" : ""
-                      }`}
+                      className={`${answerClass} ${isSelected ? "font-bold bg-purple-100" : ""}`}
                       onClick={() => handleChange(index, decodedAnswer)}
                     >
                       <input
